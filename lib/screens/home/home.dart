@@ -1,6 +1,17 @@
 import 'package:flutter/material.dart';
+import 'dart:convert';
+import '../../models/receita.dart';
 
-class Home extends StatelessWidget {
+class Home extends StatefulWidget {
+
+  @override
+  State<StatefulWidget> createState(){
+    return new HomeState();
+  }
+
+}
+
+class HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return _buildHome();
@@ -8,12 +19,31 @@ class Home extends StatelessWidget {
 
   Widget _buildHome(){
     return Scaffold(
-      body: _buildCard(),
+      body: _buildCardList(),
       appBar: _buildAppBar(),
     );
   }
 
-  Widget _buildCard(){
+  Widget _buildCardList(){
+    return FutureBuilder(
+      future: DefaultAssetBundle
+        .of(context)
+        .loadString('assets/receitas.json'),
+      builder: (context, snapshot) {
+        List<dynamic> receitas = json.decode(snapshot.data.toString());
+
+        return ListView.builder(
+          itemBuilder: (BuildContext context, int index){
+            Receita receita = Receita.fromJson(receitas[index]);
+            return _buildCard(receita.titulo, receita.foto);
+          },
+          itemCount: receitas == null ? 0 : receitas.length,
+        );
+      },
+    );
+  }
+
+  Widget _buildCard(title, image){
     return SizedBox(
       height: 300,
       child: Card(
@@ -22,8 +52,8 @@ class Home extends StatelessWidget {
             children: <Widget>[
               Stack(
                 children: <Widget>[
-                  _buildImage(),
-                  _buildCardText()
+                  _buildImage(image),
+                  _buildCardText(title)
                 ],
               ),
             ],
@@ -32,16 +62,16 @@ class Home extends StatelessWidget {
     );
   }
 
-  Widget _buildCardText(){
+  Widget _buildCardText(title){
     return Positioned(
       bottom: 10,
       right: 10,
-      child: Text('Bolo de Fubá', style: TextStyle(fontSize: 20),),
+      child: Text(title, style: TextStyle(fontSize: 20),),
     );
   }
 
-  Widget _buildImage(){
-    return Image.network('https://vovopalmirinha.com.br/wp-content/uploads/2016/06/bolo-simples.jpg', fit: BoxFit.fill, height: 268,);
+  Widget _buildImage(image){
+    return Image.asset(image, fit: BoxFit.fill, height: 268,);
   }
 
   Widget _buildAppBar(){
