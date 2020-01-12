@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'dart:convert';
 import '../../models/receita.dart';
 
@@ -53,6 +54,7 @@ class HomeState extends State<Home> {
               Stack(
                 children: <Widget>[
                   _buildImage(image),
+                  _buildCardGradient(),
                   _buildCardText(title)
                 ],
               ),
@@ -62,11 +64,32 @@ class HomeState extends State<Home> {
     );
   }
 
+  Widget _buildCardGradient(){
+    return Container(
+      height: 268,
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: FractionalOffset.topCenter,
+          end: FractionalOffset.bottomCenter,
+          colors: [
+            Colors.transparent,
+            Colors.deepOrange.withOpacity(0.7),
+          ],
+        )
+      ),
+    );
+  }
+
   Widget _buildCardText(title){
     return Positioned(
       bottom: 10,
       right: 10,
-      child: Text(title, style: TextStyle(fontSize: 20),),
+      child: Text(title,
+        style: TextStyle(
+            fontSize: 20,
+            color: Colors.white,
+        ),
+      ),
     );
   }
 
