@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import './screens/home/home.dart';
 
 void main() => runApp(MyApp());
 
@@ -20,33 +21,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.deepOrange,
       ),
-      home: Scaffold(
-        body:
-        SizedBox(
-          height: 300,
-          child: Card(
-            margin: EdgeInsets.all(16),
-              child: Column(
-                children: <Widget>[
-                  Stack(
-                    children: <Widget>[
-                      Image.network('https://vovopalmirinha.com.br/wp-content/uploads/2016/06/bolo-simples.jpg', fit: BoxFit.fill, height: 268,),
-                      Positioned(
-                        bottom: 10,
-                        right: 10,
-                        child: Text('Bolo de Fubá', style: TextStyle(fontSize: 20),),
-                      )
-                    ],
-                  ),
-                ],
-              )
-          ),
-        ),
-
-        appBar: AppBar(
-            title: Text('Cozinhando em casa')
-        ),
-      )
+      home: Home(),
     );
   }
 }
