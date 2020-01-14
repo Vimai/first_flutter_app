@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'dart:convert';
 import '../../models/receita.dart';
+import '../details/details.dart';
 
 class Home extends StatefulWidget {
 
@@ -36,7 +37,7 @@ class HomeState extends State<Home> {
         return ListView.builder(
           itemBuilder: (BuildContext context, int index){
             Receita receita = Receita.fromJson(receitas[index]);
-            return _buildCard(receita.titulo, receita.foto);
+            return _buildCard(receita);
           },
           itemCount: receitas == null ? 0 : receitas.length,
         );
@@ -44,22 +45,29 @@ class HomeState extends State<Home> {
     );
   }
 
-  Widget _buildCard(title, image){
-    return SizedBox(
-      height: 300,
-      child: Card(
-          margin: EdgeInsets.all(16),
-          child: Column(
-            children: <Widget>[
-              Stack(
-                children: <Widget>[
-                  _buildImage(image),
-                  _buildCardGradient(),
-                  _buildCardText(title)
-                ],
-              ),
-            ],
-          )
+  Widget _buildCard(receita){
+    return GestureDetector(
+      onTap: (){
+        Navigator.push(context, MaterialPageRoute(
+          builder: (context) => Details(receita: receita)
+        ));
+      },
+      child: SizedBox(
+        height: 300,
+        child: Card(
+            margin: EdgeInsets.all(16),
+            child: Column(
+              children: <Widget>[
+                Stack(
+                  children: <Widget>[
+                    _buildImage(receita.foto),
+                    _buildCardGradient(),
+                    _buildCardText(receita.titulo)
+                  ],
+                ),
+              ],
+            )
+        ),
       ),
     );
   }
